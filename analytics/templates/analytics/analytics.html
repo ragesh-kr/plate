@@ -1,0 +1,348 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<div class='container mt-3'>
+	<div class="row">
+		<div class="col-4">
+			<select class="custom-select" id="items" name='items'>
+				{% for item_i in items %}
+        {% if item_i == item %}
+				  <option value="{{item_i}}" selected="selected">{{item_i}}</option>
+        {% endif %}
+          <option value="{{item_i}}">{{item_i}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="col-4">
+			<select class="custom-select" id="category" name='category'>
+				{% for category_i in categories %}
+        {% if category_i == category %}
+				  <option value={{category_i}} selected="selected">{{category_i}}</option>
+        {% else %}
+          <option value={{category_i}}>{{category_i}}</option>
+        {% endif %}
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+	<div class='row mt-3' id='spinner1' align="center">
+		<div class="spinner-grow text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-danger" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-info" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+	</div>
+  <div class="card shadow mb-4 mt-3">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Cross Sale</h5>
+    </div>
+    <div class="card-body">
+    	<div class="row mt-3 mr-3" id='piecharts'>
+    		<div class="col-sm">    
+    			<div id='pie1' class="pie1"></div>      
+    		</div>
+    		<div class="col-sm">
+    			<div id='pie2' class="pie2"></div>
+    		</div>
+    		
+    	</div>
+    </div>
+  </div>
+	<hr>
+<!-- 	<div class='row mt-3'>
+		<h4>Sales-trend across days of the week</h4>
+	</div> -->
+	<div class='row mt-3'>
+		<div class='col-3'>
+			<label class="form-control-label" for="daterange">Pick date-range </label>
+			<input type="text" class="form-control" id='daterange' name="daterange" />
+
+		</div>
+		
+	</div>
+	<div class='row mt-3' id='spinner2' align="center">
+		<div class="spinner-grow text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-danger" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-info" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+	</div>
+	<div class='row mt-3'>
+		<div class='col'>
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Sales-trend across days of the week</h5>
+        </div>
+        <div class="card-body">
+          <div id='daysTrend' name='daysTrend'></div>
+        </div>
+    </div>
+		</div>
+	</div>
+  <hr>
+  <div class='row mt-3'>
+    <div class="col-4">
+      <select class="custom-select" id="items_p" name='items_p'>
+        {% for item_i in items %}
+        {% if item_i == item %}
+          <option value="{{item_i}}" selected="selected">{{item_i}}</option>
+        {% else %}
+          <option value="{{item_i}}">{{item_i}}</option>
+        
+        {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class='row mt-3' id='spinner3' align="center">
+    <div class="spinner-grow text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-danger" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-info" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+  </div>
+  <div class='row mt-3'>
+    <div class='col'>
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Price Trend Analysis</h5>
+        </div>
+        <div class="card-body">
+      <div id='priceTrend' name='priceTrend'></div>
+    </div>
+  </div>
+    </div>
+  </div>
+	
+</div>
+    
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script type="text/javascript">
+$('#daterange').daterangepicker({
+   ranges: {
+        'Today': [moment(), moment()],
+        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        //'Last Quarter': [moment().subtract(200, 'days'), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    },
+    "startDate":"{{startDate|safe}}",
+    "endDate": "{{endDate|safe}}",
+    "minDate": "{{minDate|safe}}",
+    "maxDate": "{{maxDate|safe}}"
+});
+</script>
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+	
+	$("#spinner1").hide();
+	$("#spinner2").hide();
+  $("#spinner3").hide();
+	
+	
+});
+
+
+	var token = '{{csrf_token}}';
+	var pieChart1 =  document.getElementById('pie1');
+	var pieChart2 =  document.getElementById('pie2');
+
+	var daysTrendGraph =  document.getElementById('daysTrend');
+  var priceTrendGraph =  document.getElementById('priceTrend');
+	var data_pieChart1 = {{pieData|safe}};
+	var data_pieChart2 = {{pieData_category|safe}};
+	var daysTrendData = {{daysTrend|safe}};
+  var priceTrendData = {{priceTrendData|safe}};
+	var layout_pieChart1 = {
+      title:'Cross sale for {{item|title}}',
+      
+      };
+      var layout_pieChart2 = {
+      title:'Cross sale for {{category|title}}',
+      
+      
+      };
+      var layout_daysTrend = {
+
+      title:'Days Trend',
+      hovermode:'closest',
+      hoverlabel: { bgcolor: "#FFF" },
+      //legend: {orientation: 'h', y: -0.3},
+      
+      //width: 1200,
+      //height: 400,
+      xaxis : {
+        automargin : true
+      },
+      yaxis : {
+        tickprefix : '₹',
+        tickformat:',.2f',
+        type:'linear',
+        autorange : true
+      }
+
+      };
+      var layout_priceTrend = {
+      title: 'Price Trend Analysis',
+      xaxis_type:'category',
+      yaxis: {title: 'Average Sales Representation',type:'log'},
+      yaxis2: {
+        title: 'Price of the Item',
+        titlefont: {color: 'rgba(255, 99, 132, 1)'},
+        tickfont: {color: 'rgba(255, 99, 132, 1)'},
+        overlaying: 'y',
+        side: 'right'
+      }
+    };
+    var config = {responsive: true,displaylogo: false};
+
+
+	 Plotly.newPlot(pieChart1, data_pieChart1,layout_pieChart1,config);
+	 Plotly.newPlot(pieChart2, data_pieChart2,layout_pieChart2,config);
+	 Plotly.newPlot(daysTrendGraph, daysTrendData,layout_daysTrend,config);
+   Plotly.newPlot(priceTrendGraph, priceTrendData,layout_priceTrend,config);
+
+	 $('#items').change(function(){
+        var item = $(this).val();
+        var category = $('#category').val()
+        ajaxCallItemCross(item,category)
+      });
+	 $('#category').change(function(){
+        var category = $(this).val();
+        var item = $('#items').val()
+        ajaxCallItemCross(item,category)
+      });
+   $('#items_p').change(function(){
+        var item_p = $(this).val();
+        
+        ajaxCallPriceTrend(item_p);
+      });
+ 	$('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+	  var daterange = $(this).val();
+	  ajaxCallDaysTrend(daterange);
+	});
+
+	function ajaxCallDaysTrend(daterange) {
+    return $.ajax({
+            headers: { "X-CSRFToken": token },
+            type:'POST',
+            url : 'analyseDaysTrend/',
+            data : {
+                'daterange':daterange,
+                
+           },beforeSend: function(){
+              $("#spinner2").show();
+              $("#daysTrend").hide();
+              
+            },
+            
+            success: function (data) {
+            Plotly.react(daysTrendGraph, data.daysTrend,layout_daysTrend,config);
+            $("#spinner2").hide();
+            $("#daysTrend").show();
+        },
+        error:function(e){
+        	console.log(e);
+        }
+        });
+}
+
+function ajaxCallPriceTrend(item_p) {
+    return $.ajax({
+            headers: { "X-CSRFToken": token },
+            type:'POST',
+            url : 'priceTrend/',
+            data : {
+                'item':item_p,
+                
+           },beforeSend: function(){
+              $("#spinner3").show();
+              $("#priceTrend").hide();
+              
+            },
+            
+            success: function(data){
+            Plotly.react(priceTrendGraph, data.priceTrendData,layout_priceTrend,config);
+            $("#spinner3").hide();
+            $("#priceTrend").show();
+        },
+        error:function(e){
+          console.log(e);
+        }
+        });
+}
+
+	 function ajaxCallItemCross(item,category) {
+    return $.ajax({
+            headers: { "X-CSRFToken": token },
+            type:'POST',
+            url : 'analysis/',
+            data : {
+                'item':item,
+                'category':category,
+
+           },
+            beforeSend: function(){
+              $("#spinner1").show();
+              $("#piecharts").hide();
+              
+            },
+            success: function (data) {
+              var data_pieChart1_ajx = data.pieData;
+              var data_pieChart2_ajx = data.pieData_category;
+              var layout_pieChart1 = {
+              title:'Cross sale for '+data.item,              
+              };
+              var layout_pieChart2 = {
+              title:'Cross sale for '+data.category,             
+              
+              };
+              //Plotly.update(pieChart1, data_pieChart1_ajx, layout_pieChart1)
+              //Plotly.update(pieChart2, data_pieChart2_ajx, layout_pieChart2)
+              Plotly.react(pieChart1, data_pieChart1_ajx,layout_pieChart1,config);
+              Plotly.react(pieChart2, data_pieChart2_ajx,layout_pieChart2,config);
+              $("#spinner1").hide();
+              $("#piecharts").show();
+              
+
+            console.log('Success');
+        },
+        error:function(e){
+        	console.log(e);
+        }
+        });
+}
+	
+
+</script>
+
+
+
+{% endblock %}

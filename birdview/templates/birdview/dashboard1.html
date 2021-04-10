@@ -1,0 +1,246 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<div class='container mt-3'>
+       
+					
+		<form  action='/dashboard/' method='POST'>
+			{% csrf_token %}
+			<div class='row'>
+				<div class='col-3'>
+					<input type="text" class="form-control" id='daterange' name="daterange" />
+				</div>
+				
+				<div class='col-2'>
+					<input type="submit" class="btn btn-info" name="button" value="Submit" />
+				</div>
+			</div>
+		</form>
+        <div class='row mt-4'>
+            
+           
+
+            <!-- Earnings (Daily) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">{{cardEndDate}}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{cardEndDate_sales}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                  <div class="row no-gutters align-items-center mt-3">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">{{cardStartDate}}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{cardStartDate_sales}}</div>
+                    </div>
+                    <div class="col-auto">
+                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+             <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">{{cardEndMonth}}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{cardEndMonth_sales}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+
+                  <div class="row no-gutters align-items-center mt-3">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">{{cardStartMonth}}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{cardStartMonth_sales}}</div>
+                    </div>
+                    <div class="col-auto">
+                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
+                      <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                        </div>
+                        <div class="col">
+                          <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-comments fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+       
+        
+		<!--<div class='row mt-5'>
+			<canvas id='myChart' height=90></canvas>
+		</div>-->
+   
+        <hr>
+        <div class='row mt-5'>
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary">Daily</button>
+            <button type="button" class="btn btn-secondary">Last 3 Months</button>
+            <button type="button" class="btn btn-secondary">Last 6 Months</button>
+            <button type="button" class="btn btn-secondary">Last 1 Year</button>
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div clss='col mb-4'>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Over-all Revenue</h6>
+                </div>
+                <div class="card-body">
+                 <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="myAreaChart" style="display: block; width: 500px; height: 320px;" width="748" height="320" class="chartjs-render-monitor"></canvas>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div clss='col mb-4'>
+            <div class="card shadow ml-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Top Franchise By Sales</h6>
+                </div>
+                <div class="card-body">
+                  <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="myAreaChart" style="display: block; width: 500px; height: 320px;" width="748" height="320" class="chartjs-render-monitor"></canvas>
+                  </div>
+               
+                </div>
+            </div>
+            
+          </div>
+        </div>
+        <div class='row'>
+          <div clss='col mb-4'>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Some more metrics</h6>
+                </div>
+                <div class="card-body">
+                 <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="myAreaChart" style="display: block; width: 500px; height: 320px;" width="748" height="320" class="chartjs-render-monitor"></canvas>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div clss='col mb-4'>
+            <div class="card shadow ml-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Detailed metrics</h6>
+                </div>
+                <div class="card-body">
+                  <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="myAreaChart" style="display: block; width: 500px; height: 320px;" width="748" height="320" class="chartjs-render-monitor"></canvas>
+                  </div>
+               
+                </div>
+            </div>
+            
+          </div>
+        </div>
+
+
+        <hr>
+      
+     
+        <br>
+   
+
+		
+		 </div>
+
+
+
+
+
+<!-- JS, Popper.js, and jQuery -->
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function() {
+$('#daterange').daterangepicker({
+   ranges: {
+        'Today': [moment(), moment()],
+        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    },
+    "startDate":"{{startDate|safe}}",
+    "endDate": "{{endDate|safe}}",
+    "minDate": "{{minDate|safe}}",
+    "maxDate": "{{maxDate|safe}}"
+});
+
+});
+$(document).ready(function() {
+
+  const $valueSpan = $('.valueSpan2');
+  const $value = $('#customRange11');
+  $valueSpan.html($value.val());
+  $value.on('input change', () => {
+
+    $valueSpan.html($value.val());
+  });
+});
+</script>
+
+
+
+
+
+
+{% endblock %}

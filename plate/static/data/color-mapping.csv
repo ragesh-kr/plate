@@ -1,0 +1,10 @@
+S2PName-Category,border_color,background_color
+Food,"rgba(255, 99, 132, 1)","rgba(255, 99, 132, 0.2)"
+Beverages,"rgba(54, 162, 235, 1)","rgba(54, 162, 235, 0.2)"
+Others,"rgba(255, 206, 86, 1)","rgba(255, 206, 86, 0.2)"
+Juice,"rgba(75, 192, 192, 1)","rgba(75, 192, 192, 0.2)"
+Snacks,"rgba(153, 102, 255, 1)","rgba(153, 102, 255, 0.2)"
+,"rgba(255, 159, 64, 1)","rgba(255, 159, 64, 0.2)"
+Check,"rgba(120, 100, 64, 1)","rgba(120, 100, 64, 0.2)"
+IceCream,"rgba(255, 80, 80, 1)","rgba(255, 80, 80, 0.2)"
+OOB,"rgba(155, 80, 80, 1)","rgba(155, 80, 80, 0.2)"

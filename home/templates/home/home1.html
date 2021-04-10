@@ -1,0 +1,621 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<!-- <div class='container mt-3'> -->
+       
+					
+		<form  action='/dashboard/' method='POST'>
+			{% csrf_token %}
+			<div class='row'>
+				<div class='col-3'>
+					<input type="text" class="form-control" id='daterange' name="daterange" />
+				</div>
+				<div class='col-2'>
+					<input type="submit" class="btn btn-info" name="button" value="Submit" />
+				</div>
+			</div>
+		</form>
+    <div class="row mt-4">
+      <div class="col-lg-4 col-6">
+        <!-- small card -->
+        <div class="small-box bg-gradient-green">
+          <div class="inner">
+            <h3>{{daySales_percentage}}<sup style="font-size: 20px">%</sup></h3>
+
+            <p>{{cardEndDate}} - {{cardEndDate_sales}}</p>
+            <p>{{cardStartDate}} - {{cardStartDate_sales}}</p>
+          </div>
+          
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="#" class="small-box-footer">
+            Day On Day Sales <i class="fas fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-6">
+        <!-- small card -->
+        <div class="small-box bg-gradient-red">
+          <div class="inner">
+            <h3>{{monthSales_percentage}}<sup style="font-size: 20px">%</sup></h3>
+
+            <p>{{cardEndMonth}} - {{cardEndMonth_sales}}</p>
+            <p>{{cardStartMonth}} - {{cardStartMonth_sales}}</p>
+          </div>
+          
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="#" class="small-box-footer">
+            Month On Month Sales <i class="fas fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-6">
+        <!-- small card -->
+        <div class="small-box bg-grey">
+          <div class="inner">
+            <h3>NIL<sup style="font-size: 20px">%</sup></h3>
+
+            <p>{{cardEndDate}} - {{cardEndDate_sales}}</p>
+            <p>{{cardStartDate}} - {{cardStartDate_sales}}</p>
+          </div>
+          
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="#" class="small-box-footer">
+            Year On Year Sales <i class="fas fa-arrow-circle-right"></i>
+          </a>
+        </div>
+      </div>
+
+      
+  
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h4>{{breakfastSales}}</h4>
+
+            <p>Breakfast</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <div class="small-box-footer">
+            Breakfast
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-teal">
+          <div class="inner">
+            <h4>{{lunchSales}}</h4>
+
+            <p>Lunch</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <div class="small-box-footer">
+            Lunch
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-gradient-purple">
+          <div class="inner">
+            <h4>{{dinnerSales}}</h4>
+
+            <p>Dinner</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <div class="small-box-footer">
+            Dinner
+          </div>
+        </div>
+      </div>
+
+      
+
+
+    </div>
+        
+        
+
+      <div class="row">
+        <div class="col">
+        <div class="card" style="position: relative; left: 0px; top: 0px;">
+          <div class="card-header ui-sortable-handle" style="cursor: move;">
+            <h3 class="card-title">
+              <i class="fas fa-chart-pie mr-1"></i>
+              Sales
+            </h3>
+            <div class="card-tools">
+              <ul class="nav nav-pills ml-auto">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Breakfast</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#sales-chart" data-toggle="tab">Lunch</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#sales-chart" data-toggle="tab">Dinner</a>
+                </li>
+              </ul>
+            </div>
+          </div><!-- /.card-header -->
+          <div class="card-body">
+            <div class="tab-content p-0">
+              <!-- Morris chart - Sales -->
+              <div class="row">
+                <div class="col-6">
+                  <div id='mealsPie'></div>
+                </div>  
+                <div class="col-6">
+                  
+                    <div id='bstPerfBarPlt_breakfast'></div>
+                  
+                </div>        
+            </div>  
+            </div>
+            <!-- <div class="tab-content p-1">
+            
+              <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                  <canvas id="revenue-chart-canvas" height="300" style="height: 300px; display: block; width: 900px;" width="900" class="chartjs-render-monitor"></canvas>                         
+               </div>
+              <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                <canvas id="sales-chart-canvas" height="300" style="height: 300px; display: block; width: 900px;" class="chartjs-render-monitor" width="900"></canvas>                         
+              </div>  
+            </div> -->
+          </div><!-- /.card-body -->
+        </div>
+        </div>
+      </div>
+
+
+        
+		<!--<div class='row mt-5'>
+			<canvas id='myChart' height=90></canvas>
+		</div>-->
+    <div class="custom-control custom-switch" >
+      <input type="checkbox" class="custom-control-input" id="customSwitch1" onclick="change();">
+      <label class="custom-control-label" for="customSwitch1">Toggle this switch </label>
+    </div>
+        <div class='row mt-3' id='franchise'>
+            <div class='col'>
+                <div id='franchiseTrend'></div>
+                
+            </div>
+        </div>
+        <div class='row mt-3' id='category'>
+            <div class='col'>
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h5 class="m-0 font-weight-bold text-primary">Category Trend</h5>
+                </div>
+                <div class="card-body">
+                  <div id='categoryTrend'></div>                 
+                </div>
+            </div>
+                
+                
+            </div>
+        </div>
+        <hr>
+      <!--   <div class="row mt-4">
+          <h3>Best & Average performing Items</h3>
+        </div> -->
+        <div class='row mt-4'>
+            <div class='col-4'>
+                <select class="custom-select" id="categorySelect" name='category'>
+                    {% for cat in category_list %}
+                    <option value={{cat}} >{{cat}}</option>
+                    {% endfor %}
+                </select>
+                
+            </div>
+            <div class='col-3'>
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary">Breakfast</button>
+                <button type="button" class="btn btn-secondary">Lunch</button>
+                <button type="button" class="btn btn-secondary">Dinner</button>
+                <button type="button" class="btn btn-secondary">All</button>
+              </div>
+            </div>
+            <div class='col-4'>
+
+              <div class="d-flex justify-content-center">
+                <div class="range-field w-75">
+                  <input type="range" class="custom-range" id="customRange11" min="5" max="15" step="5" value="5">
+                </div>
+                <span class="font-weight-bold text-primary ml-2 valueSpan2"></span>
+              </div>
+            </div>
+        </div>
+        <div class='row mt-3'>
+            <!--<div class='col-6'>
+                <canvas id='bstPerfBar'></canvas>
+            </div>-->
+            <div class='col-sm'>
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h5 class="m-0 font-weight-bold text-primary">Best Performing Items</h5>
+                </div>
+                <div class="card-body">              
+              <div id='bstPerfBarPlt'></div>
+            </div></div>
+            </div> 
+            <div class='col mt-5' id='spinner1'>
+                  <div class="spinner-grow text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-danger" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-info" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+              </div>
+            <div class='col-sm'>
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h5 class="m-0 font-weight-bold text-primary">Average Performing Items</h5>
+                </div>
+                <div class="card-body">              
+              <div id='not_bstPerfBarPlt'></div>
+            </div>
+          </div>
+            </div>                       
+        </div>
+        <hr>
+        <div class='row'>
+          <div class='col'>
+            <div id="magicsuggest">
+              <input  name="magicDropDown" class="form-control" id='magicDropDown' value="{{itemsListGraph}}">
+            </div>
+          </div>
+        </div>
+        <div class='row mt-3'>
+          <div class='col'>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h5 class="m-0 font-weight-bold text-primary">Item Trend</h5>
+                </div>
+                <div class="card-body">
+            <div class='row mt-5' id='spinner2'>
+                  <div class="spinner-grow text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-danger" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <div class="spinner-grow text-info" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+              </div>
+            <div id='item_trendPlt'></div> 
+            </div>
+            </div>           
+          </div>            
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+		
+		 </div>
+	<!-- </div> -->
+
+
+
+
+<!-- JS, Popper.js, and jQuery -->
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script type="text/javascript">
+function change()
+{
+  if (document.getElementById('customSwitch1').checked) 
+  {
+       $('#franchise').show();
+       $('#category').hide();
+  } else {
+    $('#franchise').hide();
+    $('#category').show();
+     
+  }
+}
+</script>
+<script>
+$(document).ready(function() {
+$('#daterange').daterangepicker({
+   ranges: {
+        'Today': [moment(), moment()],
+        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    },
+    "startDate":"{{startDate|safe}}",
+    "endDate": "{{endDate|safe}}",
+    "minDate": "{{minDate|safe}}",
+    "maxDate": "{{maxDate|safe}}"
+});
+$("#spinner1").hide();
+$("#spinner2").hide();
+$('#franchise').hide();
+});
+$(document).ready(function() {
+
+  const $valueSpan = $('.valueSpan2');
+  const $value = $('#customRange11');
+  $valueSpan.html($value.val());
+  $value.on('input change', () => {
+
+    $valueSpan.html($value.val());
+  });
+});
+</script>
+
+<script type="text/javascript">
+  var daterange = $('#daterange').val();
+  var franchise = $('#franchise').val();
+  var item_trendPlt = document.getElementById('item_trendPlt');
+  var config = {responsive: true};
+  var layout_categoryGraph = {
+      //title:'Category Trend',
+      //width: 1200,
+      //height: 400,
+      xaxis : {
+        automargin : true
+      },
+      yaxis : {
+        tickprefix : '₹',
+        tickformat:',.2f',
+        type:'log',
+        autorange : true
+      }
+    };
+  
+  $('input[name="magicDropDown"]').amsifySuggestags({
+    
+    suggestions: {{itemsList|safe}},
+    whiteList: true,
+});
+
+  $('input[name="magicDropDown"]').on('suggestags.change', function(e){
+  // Do something while add/remove tag
+  var items =  $(this).val();
+  var daterange = $('#daterange').val()
+  $.ajax({
+            headers: { "X-CSRFToken": token },
+            type:'POST',
+            url : 'itemsAjax/',
+            data : {
+                'daterange':daterange,
+                'franchise':franchise,
+                'items':items 
+            },beforeSend : function() {
+              $("#spinner2").show();
+              $('#item_trendPlt').hide();
+
+            },
+            success: function (data) {
+              $("#spinner2").show();
+              $('#item_trendPlt').show();
+              $("#spinner2").hide();
+              Plotly.newPlot(item_trendPlt, data.itemTrend_plt,layout_categoryGraph,config);
+            },error: function (e) {
+              console.log('error '+e);
+            }
+        });
+});
+  
+
+</script>
+
+<script type="text/javascript">
+
+   
+    var token = '{{csrf_token}}';
+    var categoryGraph = document.getElementById('categoryTrend');
+    var franchiseGraph = document.getElementById('franchiseTrend');
+    var bstPerfbar = document.getElementById('bstPerfBarPlt');
+    var not_bstPerfBar = document.getElementById('not_bstPerfBarPlt');
+    
+    
+
+    var data_categoryGraph = {{data_categoryTrend_pl|safe}};
+    var data_franchiseGraph = {{overall_franchise_Sales|safe}};
+    var layout_categoryGraph = {
+      //title:'Category Trend',
+      //width: 1200,
+      //height: 400,
+      xaxis : {
+        automargin : true
+      },
+      yaxis : {
+        tickprefix : '₹',
+        tickformat:',.2f',
+        type:'log',
+        automargin : true,
+        autorange : true
+      }
+    };
+    var layout_franchiseGraph = {
+      title:'Franchise Trend',
+      //width: 1200,
+      //height: 400,
+      xaxis : {
+        automargin : true
+      },
+      yaxis : {
+        tickprefix : '₹',
+        tickformat:',.2f',
+        type:'log',
+        automargin : true,
+        autorange : true,
+        
+      }
+    };
+
+    var item_trendPltGraph = {{itemTrend_plt|safe}};
+
+    var data_bstPerfBar = {{data_bstPerf_plt|safe}};
+    var data_not_bstPerfBarPlt = {{data_not_bstPerf_plt|safe}};
+    var layout_bstPerfBar = {
+      title:'Top performing Items',
+      autosize : true,
+      //width: 500,
+     // height: 450,
+      xaxis : {
+        automargin : true
+      },
+      yaxis : {
+        tickprefix : '₹',
+        tickformat:',.2f',
+        type:'log',
+        automargin : true,
+        autorange : true
+      }
+    };
+    var config = {responsive: true , displayModeBar: false};
+
+
+    Plotly.newPlot(categoryGraph, data_categoryGraph,layout_categoryGraph,config);
+    Plotly.newPlot(franchiseGraph, data_franchiseGraph,layout_franchiseGraph,config);
+    Plotly.newPlot(bstPerfbar, data_bstPerfBar,layout_bstPerfBar,config);
+    Plotly.newPlot(not_bstPerfBarPlt, data_not_bstPerfBarPlt,layout_bstPerfBar,config);
+    Plotly.newPlot(item_trendPlt, item_trendPltGraph,layout_categoryGraph,config);
+
+    $('#categorySelect').change(function(){
+        var category = $(this).val();
+        daterange = $('#daterange').val();
+        franchise = $('#franchise').val();
+        count = $('#customRange11').val();
+        ajaxCallItemPerf(category,daterange,franchise,count)
+      });
+    $('#customRange11').change(function(){
+        category = $('#categorySelect').val();
+        daterange = $('#daterange').val();
+        franchise = $('#franchise').val();
+        count = $('#customRange11').val();
+        ajaxCallItemPerf(category,daterange,franchise,count)
+      });
+
+
+
+    function ajaxCallItemPerf(category,daterange,franchise,count) {
+      var bstPerfbar = document.getElementById('bstPerfBarPlt');
+      var not_bstPerfBar = document.getElementById('not_bstPerfBarPlt');
+
+    return $.ajax({
+            headers: { "X-CSRFToken": token },
+            type:'POST',
+            url : 'test/',
+            data : {
+                'category':category,
+                'daterange':daterange,
+                'franchise':franchise,
+                'count':count              
+                
+            },
+            beforeSend: function(){
+              $("#spinner1").show();
+              
+              $('#bstPerfBarPlt').hide();
+              $('#not_bstPerfBarPlt').hide();
+
+            },
+            success: function (data) {
+              var perfBar_ajx = data.data_bstPerf_plt;
+              var not_perfBar_ajx = data.data_not_bstPerf_plt;
+              Plotly.newPlot(bstPerfbar, perfBar_ajx,layout_bstPerfBar,config);
+              Plotly.newPlot(not_bstPerfBar, not_perfBar_ajx,layout_bstPerfBar,config);
+              $('#bstPerfBarPlt').show();
+              $('#not_bstPerfBarPlt').show();
+              $("#spinner1").hide();
+              
+
+            console.log('Success');
+            //console.log(data.data_bstPerf_plt)
+        }
+        });
+}
+
+</script>
+
+<script type="text/javascript">
+  var data_pieChart = {{pieData|safe}};
+  var pieChartCanvas =  document.getElementById('mealsPie');
+  var layout_pieChart1= {
+      title:'Course of Meal Split-up',
+      
+      
+      };
+      console.log(data_pieChart);
+
+  var config = {responsive: true,displaylogo: false};
+
+  Plotly.newPlot(pieChartCanvas,data_pieChart,layout_pieChart1,config);
+
+</script>
+
+<script type="text/javascript">
+  var data= {{breakfastTopBar|safe}};
+  var bstBarChartCanvas_breakfast =  document.getElementById('bstPerfBarPlt_breakfast');
+  var layout_bstPerfBar = {
+      title:'Top performing Items during Breakfast',
+      autosize : true,
+      //width: 500,
+      //height: 450,
+      xaxis : {
+        automargin : true
+      },
+      yaxis : {
+        tickprefix : '₹',
+        tickformat:',.2f',
+        type:'log',
+        automargin : true,
+        autorange : true
+      }
+    };
+    var config = {responsive: true , displayModeBar: false};
+
+  
+
+  Plotly.newPlot(bstBarChartCanvas_breakfast,data,layout_bstPerfBar,config);
+
+</script>
+
+
+
+{% endblock %}

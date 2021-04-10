@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+	<title>Dashboard - Plate</title>
+    
+
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript" src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
+<script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+	<div class='container mt-5'>
+       
+					
+		<form  action='/dashboard/' method='POST'>
+			{% csrf_token %}
+			<div class='row'>
+				<div class='col-3'>
+					<input type="text" class="form-control" id='daterange' name="daterange" />
+				</div>
+				<div class='col-3'>
+					<select class="custom-select" id="inputGroupSelect01" name='franchise'>
+					    
+					    <option value="1" selected>One</option>
+					    <option value="2">Two</option>
+					    <option value="3">Three</option>
+					 </select>
+				</div>
+				<div class='col-2'>
+					<input type="submit" class="btn btn-info" name="button" value="Submit" />
+				</div>
+			</div>
+		</form>
+        <div class='row mt-3'>
+            <div class='col'>
+                <div class="card text-center">
+                  <div class="card-header">
+                    Featured
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.
+                    </p>
+                    
+                  </div>
+                  <div class="card-footer text-muted">
+                    2 days ago
+                  </div>
+                </div>
+            </div>
+            <div class='col'>
+                <div class="card text-center">
+                  <div class="card-header">
+                    Featured
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.
+                    </p>
+                    
+                  </div>
+                  <div class="card-footer text-muted">
+                    2 days ago
+                  </div>
+                </div>
+            </div>
+            <div class='col'>
+                <div class="card text-center">
+                  <div class="card-header">
+                    Featured
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.
+                    </p>
+                    
+                  </div>
+                  <div class="card-footer text-muted">
+                    2 days ago
+                  </div>
+                </div>
+            </div>
+        </div>
+        
+		<!-- <div class='row mt-5'>
+			<canvas id='myChart' height=90></canvas>
+		</div> -->
+        <div class='row mt-3'>
+            <div class='col'>
+                <div id='categoryTrend'></div>
+            </div>
+        </div>
+        <hr>
+        <div class='row'>
+            <div class='col-4'>
+                <select class="custom-select" id="category" name='category'>
+                    {% for cat in category_list %}
+                    <option value={{cat}} >{{cat}}</option>
+                    {% endfor %}
+                </select>
+                
+            </div>
+        </div>
+        <div class='row'>
+            <!--<div class='col-6'>
+                <canvas id='bstPerfBar'></canvas>
+            </div>-->
+            <div class='col-6'>
+                <div id='bstPerfBarPlt'></div>
+            </div>                      
+        </div>
+        <div class='row mt-2'>
+            <canvas id='lstPerfBar'></canvas>
+            
+        </div>
+		
+		
+	</div>
+
+
+
+</body>
+<!-- JS, Popper.js, and jQuery -->
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<script>
+$('#daterange').daterangepicker({
+    "startDate":"{{startDate|safe}}",
+    "endDate": "{{endDate|safe}}"
+});
+</script>
+
+
+<!--Later these scripts ll be moved to a js file under static folder directory-->
+<script type="text/javascript">
+    
+    $('#inputGroupSelect02').on('change', function() {
+       alert('test');
+    });
+</script>
+<script type="text/javascript">
+    var bstPerfBar = document.getElementById('bstPerfBar');
+    var bstPerfBar_chart = new Chart(bstPerfBar,{
+    type : 'bar',
+    data : {
+        labels : {{xaxis_bstPerfBar|safe}},
+        datasets : {{dataset_bstPerf|safe}}
+
+    },
+    options: {
+        title: {
+            display: true,
+            text: 'Items generating more revenue'
+        },
+        legend: {
+            display: false
+        },
+        scales: {
+            xAxes: [{
+
+                display : true,
+                scaleLabel :{
+                    display : true,
+                    labelString : 'Items'
+                }           
+            }],
+            yAxes: [{
+                    scaleLabel :{
+                    display : true,
+                    labelString : 'Total Amount'
+                } 
+
+            }]
+        }
+    }
+
+});
+</script>
+
+
+<script type="text/javascript">
+     var token = '{{csrf_token}}';
+    var categoryGraph = document.getElementById('categoryTrend');
+    var bstPerfbar = document.getElementById('bstPerfBarPlt');
+
+    var data_categoryGraph = {{data_categoryTrend_pl|safe}};
+    var layout_categoryGraph = {
+      title:'Category Trend',
+      //width: 1200,
+      //height: 400,
+      xaxis : {
+        automargin : true
+      },
+      yaxis : {
+        tickprefix : '₹',
+        tickformat:',.2f',
+        type:'log',
+        autorange : true
+      }
+    };
+
+    var data_bstPerfBar = {{data_bstPerf_plt|safe}};
+    var layout_bstPerfBar = {
+      title:'Top performing Items',
+      //width: 1200,
+      //height: 400,
+      xaxis : {
+        automargin : true
+      },
+      yaxis : {
+        tickprefix : '₹',
+        tickformat:',.2f',
+        type:'log',
+        autorange : true
+      }
+    };
+    var config = {responsive: true};
+
+
+    Plotly.newPlot(categoryGraph, data_categoryGraph,layout_categoryGraph,config);
+    Plotly.newPlot(bstPerfbar, data_bstPerfBar,layout_bstPerfBar,config);
+
+    $('#category').change(function(){
+        var category = $(this).val();
+        $.ajax({
+            headers: { "X-CSRFToken": token },
+            type:'POST',
+            url : 'test/',
+            data : {
+                'category':category
+            }
+        })
+
+    });
+
+</script>
+
+</html>
