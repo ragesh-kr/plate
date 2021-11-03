@@ -141,7 +141,20 @@ _Below is an example of how you can instruct your audience on installing and set
 
 ![Alt text](https://github.com/ragesh-kr/plate/blob/ragesh-dev/images/Meals_split_up.PNG?raw=true "Optional Title")
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Sale comparision of breakfast , lunch and Dinner
+
+## Cross Sale analysis
+
+![Alt text](https://github.com/ragesh-kr/plate/blob/ragesh-dev/images/CrossSaleAnalysis.PNG?raw=true "Optional Title")
+
+
+
+
+## Item vs Item Comparision using auto suggest text box
+
+![Alt text](https://github.com/ragesh-kr/plate/blob/ragesh-dev/images/itemComp.PNG?raw=true "Optional Title")
+
+Compare one item in the menu against another item
 
 
 
@@ -150,15 +163,14 @@ Use this space to show useful examples of how a project can be used. Additional 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [] Add Additional Templates w/ Examples
-- [] Add "components" document to easily copy & paste sections of the readme
-- [] Multi-language Support
-    - [] Chinese
-    - [] Spanish
+- [] Add data foramtter module
+- [x] Add better UI teamplate
+- [] Make it mobile ready
+- [] Multi-curency Support
+    - [] USD
+    - [] EURO
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
